@@ -52,10 +52,24 @@ let userController = {
           password: bcrypt.hashSync(password, bcrypt.genSaltSync(10), null)
         }).then(user => {
           req.flash('success_msg', 'Register successfully.')
-          return res.render('register')
+          return res.redirect('/register')
         })
       })
+  },
 
+  loginPage: (req, res) => {
+    return res.render('login')
+  },
+
+  login: (req, res) => {
+    req.flash('success_msg', "Login successfully.")
+    res.redirect('/restaurants')
+  },
+
+  logout: (req, res) => {
+    req.flash('success_msg', 'You are now logged out.')
+    req.logout()
+    res.redirect('/login')
   }
 }
 
