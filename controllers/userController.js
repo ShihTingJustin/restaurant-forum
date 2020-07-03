@@ -67,7 +67,7 @@ let userController = {
   },
 
   logout: (req, res) => {
-    req.flash('success_msg', 'You are now logged out.')
+    req.flash('success_msg', 'Logout successfully')
     req.logout()
     res.redirect('/login')
   }
