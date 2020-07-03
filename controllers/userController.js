@@ -54,6 +54,7 @@ let userController = {
           req.flash('success_msg', 'Register successfully.')
           return res.redirect('/register')
         })
+        .catch(err => console.log(err))
       })
   },
 

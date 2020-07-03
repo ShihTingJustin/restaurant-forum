@@ -30,6 +30,7 @@ const adminController = {
         req.flash('success_mgs', 'restaurant was successfully created')
         res.redirect('/admin/restaurants')
       })
+      .catch(err => console.log(err))
   },
 
   getRestaurant: (req, res) => {
@@ -38,6 +39,7 @@ const adminController = {
       .then(restaurant => {
         return res.render('admin/restaurant', { restaurant })
       })
+      .catch(err => console.log(err))
   },
 
   editRestaurant: (req, res) => {
@@ -46,6 +48,7 @@ const adminController = {
       .then(restaurant => {
         return res.render('admin/create', { restaurant })
       })
+      .catch(err => console.log(err))
   },
 
   putRestaurant: (req, res) => {
@@ -69,6 +72,14 @@ const adminController = {
         req.flash('success_msg', 'restaurant was successfully updated')
         res.redirect('/admin/restaurants')
       })
+      .catch(err => console.log(err))
+  },
+
+  deleteRestaurant: (req, res) => {
+    const { id } = req.params
+    return Restaurant.destroy({ where: { id } })
+      .then(() => res.redirect('/admin/restaurants'))
+      .catch(err => console.log(err))
   }
 
 }
