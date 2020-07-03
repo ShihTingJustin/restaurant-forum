@@ -1,3 +1,4 @@
+const fs = require('fs')
 const db = require('../models')
 const Restaurant = db.Restaurant
 
@@ -19,18 +20,42 @@ const adminController = {
       req.flash('error_msg', "name didn't exist")
       return res.redirect('back')
     }
-    return Restaurant.create({
-      name,
-      tel,
-      address,
-      opening_hours,
-      description
-    })
-      .then(restaurant => {
-        req.flash('success_mgs', 'restaurant was successfully created')
-        res.redirect('/admin/restaurants')
+    const { file } = req
+    if (file) {
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log(`[ERROR]: ${err}`)
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return Restaurant.create({
+            name,
+            tel,
+            address,
+            opening_hours,
+            description,
+            image: `/upload/${file.originalname}`
+          })
+            .then(() => {
+              req.flash('success_mgs', 'restaurant was successfully created')
+              res.redirect('/admin/restaurants')
+            })
+            .catch(err => console.log(err))
+        })
       })
-      .catch(err => console.log(err))
+    } else {
+      return Restaurant.create({
+        name,
+        tel,
+        address,
+        opening_hours,
+        description,
+        image: null
+      })
+        .then(() => {
+          req.flash('success_mgs', 'restaurant was successfully created')
+          res.redirect('/admin/restaurants')
+        })
+        .catch(err => console.log(err))
+    }
+
   },
 
   getRestaurant: (req, res) => {
@@ -58,21 +83,50 @@ const adminController = {
       req.flash(req.flash('error_msg', "name didn't exist"))
       return res.redirect('back')
     }
-    return Restaurant.update(
-      {
-        name,
-        tel,
-        address,
-        opening_hours,
-        description
-      },
-      { where: { id } }
-    )
-      .then(restaurant => {
-        req.flash('success_msg', 'restaurant was successfully updated')
-        res.redirect('/admin/restaurants')
+
+    const { file } = req
+    if (file) {
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log(`[ERROR]: ${err}`)
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return Restaurant.findByPk(id)
+            .then(restaurant => {
+              restaurant.update({
+                name,
+                tel,
+                address,
+                opening_hours,
+                description,
+                image: `/upload/${file.originalname}`
+              })
+                .then(() => {
+                  req.flash('success_messages', 'restaurant was successfully updated')
+                  res.redirect('/admin/restaurants')
+                })
+            })
+            .catch(err => console.log(err))
+        })
       })
-      .catch(err => console.log(err))
+    } else {
+      return Restaurant.findByPk(id)
+        .then(restaurant => {
+          restaurant.update(
+            {
+              name,
+              tel,
+              address,
+              opening_hours,
+              description,
+              image: restaurant.image
+            }
+          )
+            .then(() => {
+              req.flash('success_msg', 'restaurant was successfully updated')
+              res.redirect('/admin/restaurants')
+            })
+        })
+        .catch(err => console.log(err))
+    }
   },
 
   deleteRestaurant: (req, res) => {

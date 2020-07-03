@@ -12,3 +12,7 @@ Desktop.ini
 node_modules
 *.log
 *.gz
+
+# multer
+temp/
+upload/
