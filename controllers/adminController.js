@@ -32,6 +32,15 @@ const adminController = {
       req.flash('success_mgs', 'restaurant was successfully created')
       res.redirect('/admin/restaurants')
     })
+  },
+
+  getRestaurant: (req, res) => {
+    const { id } = req.params
+
+    return Restaurant.findByPk(id,{ raw: true })
+      .then(restaurant => {
+        return res.render('admin/restaurant', { restaurant })
+      })
   }
 
 }
