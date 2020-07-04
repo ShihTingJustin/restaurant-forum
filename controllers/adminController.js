@@ -146,17 +146,46 @@ const adminController = {
 
   putUser: (req, res) => {
     const { id } = req.params
-    return User.findByPk(id)
-      .then(user => {
-        user.update({
-          isAdmin: user.isAdmin ? 0 : 1
+    const switches = req.body.switch
+
+    if (!switches) {
+      return User.findAll({ where: { isAdmin: 1 } })
+        .then(users => {
+          if (users.length > 1) {
+            return User.findByPk(id)
+              .then(user => {
+                user.update({
+                  isAdmin: 0
+                })
+                  .then(user => {
+                    req.flash('success_msg', `The authority of user "${user.email}" was successfully updated`)
+                    return res.redirect('/admin/users')
+                  })
+                  .catch(err => console.log(err))
+              })
+              .catch(err => console.log(err))
+          } else {
+            req.flash('warning_msg', 'Unable to adjust the authority, at least one admin must be there.')
+            return res.redirect('/admin/users')
+          }
         })
-          .then(user => {
-            req.flash('success_msg', `The authority of user "${user.email}" was successfully updated`)
-            res.redirect('/admin/users')
+        .catch(err => console.log(err))
+    }
+
+    if (switches) {
+      return User.findByPk(id)
+        .then(user => {
+          user.update({
+            isAdmin: 1
           })
-      })
-      .catch(err => console.log(err))
+            .then(user => {
+              req.flash('success_msg', `The authority of user "${user.email}" was successfully updated`)
+              return res.redirect('/admin/users')
+            })
+            .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+    }
   }
 
 }

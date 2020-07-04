@@ -1,3 +1,7 @@
+.custom-control-label:hover {
+  cursor: pointer;
+}
+
 /* login page */
 .login-input-group {
   margin: 3rem 0;
