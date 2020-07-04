@@ -6,31 +6,33 @@
     <a href="/admin/users">Users</a>
   </div>
   <div>
-    <a href='/admin/restaurants/create'>
-      <button type="button" class="btn btn-primary">New Restaurant</button>
-    </a>
+    
   </div>
 </div>
 <br />
-<table class="table">
+<table class="table text-center">
   <thead class="thead-dark">
     <tr>
       <th scope="col">#</th>
       <th scope="col">email</th>
       <th scope="col">Role</th>
-      <th scope="col">Authority Setting</th>
+      <th scope="col"></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-body">
     {{#each users}}
     <tr>
       <th scope="row">{{this.id}}</th>
-      <td>{{ this.email }}</td>
-      <td>{{#if this.isAdmin}}admin{{else}}user{{/if}}</td>
-      <td>
+      <td class="users-table-email">{{ this.email }}</td>
+      <td class="">{{#if this.isAdmin}}admin{{else}}user{{/if}}</td>
+      <td class="text-left">
         <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-link authority-switch-{{#if this.isAdmin}}user{{else}}admin{{/if}}">set
-            as {{#if this.isAdmin}}user{{else}}admin{{/if}}</button>
+          <div class="custom-control custom-switch">
+            <input {{#if this.isAdmin}} checked {{/if}} type="checkbox"
+              class="custom-control-input authority-switch-{{#if this.isAdmin}}user{{else}}admin{{/if}}"
+              id="customSwitch-{{this.id}}" name="switch" onChange="this.form.submit()">
+            <label class="custom-control-label" for="customSwitch-{{this.id}}" onclick="return checkBeforeAdjust()"></label>
+          </div>
         </form>
       </td>
     </tr>

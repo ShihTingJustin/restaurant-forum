@@ -2,19 +2,22 @@
 (function () {
   const switchers = document.querySelectorAll('.authority-switch-user')
   let adminAmount = 0
-  switchers.forEach(switcher => {
-    adminAmount++
-  })
+
+  switchers.forEach(switcher => adminAmount++)
   if (adminAmount < 2) {
     switchers.forEach(switcher => {
-      switcher.classList.add('d-none')
+      switcher.setAttribute('disabled', 'true')
     })
   } else if (adminAmount >= 2) {
     switchers.forEach(switcher => {
-      switcher.classList.remove('d-none')
+      switcher.removeAttribute('disabled')
     })
   }
 })()
+
+function checkBeforeAdjust() {
+  return window.confirm('Are you sure you really want to adjust the authority?')
+}
 
 // alert auto dismiss
 window.setTimeout(function () {

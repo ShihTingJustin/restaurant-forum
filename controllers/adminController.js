@@ -140,9 +140,7 @@ const adminController = {
   getUsers: (req, res) => {
     return User.findAll({ raw: true })
       .then(users => {
-        const adminAmount = users.filter(user => user.isAdmin === 1).length
-        const setAsUser = true
-        res.render('admin/users', { users, setAsUser })
+        res.render('admin/users', { users })
       })
   },
 
