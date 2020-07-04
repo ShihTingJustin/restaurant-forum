@@ -1,4 +1,3 @@
-const fs = require('fs')
 const db = require('../models')
 const Restaurant = db.Restaurant
 
@@ -91,23 +90,23 @@ const adminController = {
       imgur.setClientID(IMGUR_CLIENT_ID)
       imgur.upload(file.path, (err, img) => {
         if (err) console.log(`[ERROR]: ${err}`)
-          return Restaurant.findByPk(id)
-            .then(restaurant => {
-              restaurant.update({
-                name,
-                tel,
-                address,
-                opening_hours,
-                description,
-                image: img.data.link
-              })
-                .then(() => {
-                  req.flash('success_messages', 'restaurant was successfully updated')
-                  res.redirect('/admin/restaurants')
-                })
+        return Restaurant.findByPk(id)
+          .then(restaurant => {
+            restaurant.update({
+              name,
+              tel,
+              address,
+              opening_hours,
+              description,
+              image: img.data.link
             })
-            .catch(err => console.log(err))
-        })
+              .then(() => {
+                req.flash('success_msg', 'restaurant was successfully updated')
+                res.redirect('/admin/restaurants')
+              })
+          })
+          .catch(err => console.log(err))
+      })
     } else {
       return Restaurant.findByPk(id)
         .then(restaurant => {
