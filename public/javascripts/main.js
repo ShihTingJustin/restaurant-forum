@@ -15,10 +15,6 @@
   }
 })()
 
-function checkBeforeAdjust() {
-  return window.confirm('Are you sure you really want to adjust the authority?')
-}
-
 // alert auto dismiss
 window.setTimeout(function () {
   $(".alert").alert('close')

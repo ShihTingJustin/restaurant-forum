@@ -31,7 +31,7 @@
             <input {{#if this.isAdmin}} checked {{/if}} type="checkbox"
               class="custom-control-input authority-switch-{{#if this.isAdmin}}user{{else}}admin{{/if}}"
               id="customSwitch-{{this.id}}" name="switch" onChange="this.form.submit()">
-            <label class="custom-control-label" for="customSwitch-{{this.id}}" onclick="return checkBeforeAdjust()"></label>
+            <label class="custom-control-label" for="customSwitch-{{this.id}}"></label>
           </div>
         </form>
       </td>
