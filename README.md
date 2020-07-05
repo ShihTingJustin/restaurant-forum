@@ -6,6 +6,8 @@ A simple backstage management system of restaurant forums built with Node.js and
 2. User authority management
 3. Log-in with local or Facebook account
 
+![](https://i.imgur.com/ad9RpxQ.png)
+
 ## Getting Started
 1. Clone repository to your local computer
 ```
@@ -15,12 +17,12 @@ $ git clone https://github.com/ShihTingJustin/restaurant-forum.git
 ```
 $ npm install
 ```
-3. Download env.example from [here](https://bit.ly/3eUqqhA)
+3. Download env.example from [here](https://bit.ly/38vtO09)
 
 4. Put **env.example** in root directory and rename to **.env** in editor 
 
-5. Enter your facebook ID and SECRET in **.env**
-(You can apply from [here](https://developers.facebook.com/))
+5. Add your IMGUR CLIENTID, facebook ID and SECRET in **.env**
+(You can apply from [facebook](https://developers.facebook.com/) and [imgur](https://imgur.com/))
 
 6. Use seed data 
 ```
