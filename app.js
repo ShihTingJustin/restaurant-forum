@@ -19,9 +19,12 @@ app.set('view engine', 'hbs')
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
-  secret: 'JustinTheDriver',
+  secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 60 * 60 * 1000  //ms
+  }
 }))
 
 app.use(passport.initialize())
