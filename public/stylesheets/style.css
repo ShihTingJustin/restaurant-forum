@@ -39,39 +39,47 @@ input + .label {
   transition-duration: 0.3s;
 }
 
+#login-card {
+  position: relative;
+}
+
 #label-login-email {
   position: absolute;
-  top: 31%;
+  top: 28%;
   left: 10%;
 }
 
 #label-login-pd {
   position: absolute;
-  top: 48.5%;
+  top: 45%;
   left: 10%;
+}
+
+#login-card {
+  position: relative;
 }
 
 #label-reg-name {
   position: absolute;
-  top: 22%;
+  top: 21%;
   left: 10%;
 }
 
 #label-reg-email {
   position: absolute;
-  top: 35.5%;
+  top: 33.5%;
   left: 10%;
 }
 
 #label-reg-pd {
   position: absolute;
-  top: 49.5%;
+  top: 46%;
   left: 10%;
 }
 
 #label-reg-cpd {
   position: absolute;
-  top: 63%;
+  top: 58.5%;
   left: 10%;
 }
 
