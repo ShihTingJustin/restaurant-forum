@@ -165,8 +165,12 @@ const adminController = {
               })
               .catch(err => console.log(err))
           } else {
-            req.flash('warning_msg', 'Unable to adjust the authority, at least one admin must be there.')
-            return res.redirect('/admin/users')
+            return User.findByPk(id)
+              .then(user => {
+                req.flash('warning_msg', `Unable to adjust authority of user "${user.email}", at least one admin must be there.`)
+                return res.redirect('/admin/users')
+              })
+              .catch(err => console.log(err))
           }
         })
         .catch(err => console.log(err))
