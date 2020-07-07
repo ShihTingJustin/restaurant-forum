@@ -1,37 +1,50 @@
 {{#if restaurant}}
 <form action="/admin/restaurants/{{ restaurant.id }}?_method=PUT" method="POST" enctype="multipart/form-data">
-{{else}}
-<form action="/admin/restaurants" method="POST" enctype="multipart/form-data">
-{{/if}}
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" value="{{ restaurant.name }}">
-  </div>
+  {{else}}
+  <form action="/admin/restaurants" method="POST" enctype="multipart/form-data">
+    {{/if}}
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" name="name" id="name" placeholder="Enter name"
+        value="{{ restaurant.name }}">
+    </div>
 
-  <div class="form-group">
-    <label for="tel">Tel</label>
-    <input type="text" class="form-control" name="tel" id="tel" placeholder="Enter tel" value="{{ restaurant.tel }}">
-  </div>
+    <div class="form-group">
+      <label for="name">Category</label>
+      <select class="form-control" name="categoryId" id="categoryId">
+        {{#each categories}}
+  <option value="{{ this.id }}">{{ this.name }}</option>
+        {{/each}}
+      </select>
+    </div>
 
-  <div class="form-group">
-    <label for="address">Address</label>
-    <input type="text" class="form-control" name="address" id="address" placeholder="Enter address" value="{{ restaurant.address }}">
-  </div>
+    <div class="form-group">
+      <label for="tel">Tel</label>
+      <input type="text" class="form-control" name="tel" id="tel" placeholder="Enter tel" value="{{ restaurant.tel }}">
+    </div>
 
-  <div class="form-group">
-    <label for="opening_hours">Opening Hours</label>
-    <input type="time" class="form-control" name="opening_hours" id="opening_hours" placeholder="Enter opening_hours" value="{{ restaurant.opening_hours }}">
-  </div>
+    <div class="form-group">
+      <label for="address">Address</label>
+      <input type="text" class="form-control" name="address" id="address" placeholder="Enter address"
+        value="{{ restaurant.address }}">
+    </div>
 
-  <div class="form-group">
-    <label for="description">Description</label>
-    <textarea class="form-control" id="description" name="description" rows="3">{{ restaurant.description }}</textarea>
-  </div>
+    <div class="form-group">
+      <label for="opening_hours">Opening Hours</label>
+      <input type="time" class="form-control" name="opening_hours" id="opening_hours" placeholder="Enter opening_hours"
+        value="{{ restaurant.opening_hours }}">
+    </div>
 
-  <div class="form-group">
-    <label for="image">Image</label>
-    <input type="file" class="form-control-file" name="image" id="image">
-  </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea class="form-control" id="description" name="description"
+        rows="3">{{ restaurant.description }}</textarea>
+    </div>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+    <div class="form-group">
+      <label for="image">Image</label>
+      <input type="file" class="form-control-file" name="image" id="image">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>

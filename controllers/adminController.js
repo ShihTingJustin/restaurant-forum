@@ -4,6 +4,7 @@ const User = db.User
 const Category = db.Category
 
 const imgur = require('imgur-node-api')
+const category = require('../models/category')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const adminController = {
@@ -19,7 +20,13 @@ const adminController = {
   },
 
   createRestaurant: (req, res) => {
-    return res.render('admin/create')
+    Category.findAll({
+      raw: true,
+      nest: true
+    })
+      .then(categories => {
+        return res.render('admin/create', { categories })
+      })
   },
 
   postRestaurant: (req, res) => {
@@ -39,7 +46,8 @@ const adminController = {
           address,
           opening_hours,
           description,
-          image: img.data.link
+          image: img.data.link,
+          CategoryId: req.body.categoryId
         })
           .then(() => {
             req.flash('success_mgs', 'restaurant was successfully created')
@@ -54,7 +62,8 @@ const adminController = {
         address,
         opening_hours,
         description,
-        image: null
+        image: null,
+        CategoryId: req.body.categoryId
       })
         .then(() => {
           req.flash('success_mgs', 'restaurant was successfully created')
@@ -80,11 +89,17 @@ const adminController = {
 
   editRestaurant: (req, res) => {
     const { id } = req.params
-    return Restaurant.findByPk(id, { raw: true })
-      .then(restaurant => {
-        return res.render('admin/create', { restaurant })
+    Category.findAll({
+      raw: true,
+      nest: true
+    })
+      .then(categories => {
+        return Restaurant.findByPk(id, { raw: true })
+          .then(restaurant => {
+            return res.render('admin/create', { restaurant, categories })
+          })
+          .catch(err => console.log(err))
       })
-      .catch(err => console.log(err))
   },
 
   putRestaurant: (req, res) => {
