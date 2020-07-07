@@ -123,7 +123,8 @@ const adminController = {
               address,
               opening_hours,
               description,
-              image: img.data.link
+              image: img.data.link,
+              CategoryId: req.body.categoryId
             })
               .then(() => {
                 req.flash('success_msg', 'restaurant was successfully updated')
@@ -142,7 +143,8 @@ const adminController = {
               address,
               opening_hours,
               description,
-              image: restaurant.image
+              image: restaurant.image,
+              CategoryId: req.body.categoryId
             }
           )
             .then(() => {
