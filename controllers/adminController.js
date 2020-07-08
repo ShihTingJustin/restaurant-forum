@@ -4,7 +4,6 @@ const User = db.User
 const Category = db.Category
 
 const imgur = require('imgur-node-api')
-const category = require('../models/category')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const adminController = {

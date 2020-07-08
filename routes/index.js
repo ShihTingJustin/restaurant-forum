@@ -3,6 +3,7 @@ const adminController = require('../controllers/adminController')
 const userController = require('../controllers/userController')
 
 const multer = require('multer')
+const categoryController = require('../controllers/categoryController')
 const upload = multer({ dest: 'temp/' })
 
 module.exports = (app, passport) => {
@@ -37,6 +38,7 @@ module.exports = (app, passport) => {
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
   app.put('/admin/users/:id', authenticatedAdmin, adminController.putUser)
+  app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
 
   app.get('/register', userController.registerPage)
   app.post('/register', userController.register)
