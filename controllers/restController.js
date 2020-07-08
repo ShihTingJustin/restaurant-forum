@@ -4,7 +4,7 @@ const Category = db.Category
 
 const restController = {
   getRestaurants: (req, res) => {
-    Restaurant.findAll({ raw:true, nest:true, include: Category })
+    Restaurant.findAll({ raw: true, nest: true, include: Category })
       .then(restaurants => {
         const data = restaurants.map(r => ({
           ...r,
@@ -15,7 +15,16 @@ const restController = {
           restaurants: data
         })
       })
+  },
+
+  getRestaurant: (req, res) => {
+    const { id } = req.params
+    return Restaurant.findByPk(id, { include: Category })
+      .then(restaurant => res.render('restaurant', { restaurant: restaurant.toJSON() }))
   }
+
+
+
 }
 
 module.exports = restController
