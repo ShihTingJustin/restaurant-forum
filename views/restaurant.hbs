@@ -25,7 +25,7 @@
 <blockquote class="blockquote mb-0">
   <h4><a href="/users/{{this.User.id}}">{{this.User.name}}</a></h4>
   <p>{{this.text}}</p>
-  <footer class="blockquote-footer">{{this.createdAt}}</footer>
+  <footer class="blockquote-footer">{{moment this.createdAt}}</footer>
 </blockquote>
 <hr />
 {{/each}}
