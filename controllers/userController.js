@@ -54,7 +54,7 @@ let userController = {
           req.flash('success_msg', 'Register successfully.')
           return res.redirect('/register')
         })
-        .catch(err => console.log(err))
+          .catch(err => console.log(err))
       })
   },
 
@@ -71,6 +71,23 @@ let userController = {
     req.flash('success_msg', 'Logout successfully')
     req.logout()
     res.redirect('/login')
+  },
+
+  getUser: (req, res) => {
+    const { id } = req.user
+    return User.findByPk(id)
+      .then(user => {
+        console.log(user)
+        res.render('profile', { user: user.toJSON() })
+      })
+      .catch(err => console.log(err))
+  },
+
+  editUser: (req, res) => {
+    const { id } = req.user
+    return User.findByPk(id)
+      .then(user => res.render('editProfile', { user: user.toJSON() }))
+      .catch(err => console.log(err))
   }
 }
 
