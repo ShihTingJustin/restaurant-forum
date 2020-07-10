@@ -86,14 +86,14 @@ let userController = {
     })
       .then(otherUser => {
         Comment.findAndCountAll({
-          where: { UserId: req.user.id },
+          where: { UserId: req.params.id },
           raw: true,
           nest: true,
           include: [User, Restaurant],
           limit: 10
         })
           .then(comments => {
-            console.log(comments)
+            console.log(comments, comments.rows[0].User.id)
             return res.render('profile', {
               user: req.user,
               otherUser,
@@ -102,7 +102,6 @@ let userController = {
               comments: comments.rows
             })
           })
-
       })
       .catch(err => console.log(err))
   },

@@ -1,7 +1,7 @@
 <div class="card card-body">
   <div class="row d-flex align-items-center">
     <div class="profile-avatar col-2 mx-4">
-      <img src="{{ otherUser.image }}" alt="" class="border rounded-circle mx-auto"
+      <img src="{{#unless otherUser.image}}https://www.kindpng.com/picc/b/130/1300240.png{{/unless}}{{ otherUser.image }}" alt="" class="border rounded-circle mx-auto"
         style="width: 150px; height: 150px;">
     </div>
     <div class="profile-info col-4 ml-4">
@@ -12,16 +12,16 @@
       {{/if}}
     </div>
     <div class="profile-activity col-4">
-      <div>
-      <span class="badge badge-secondary font-weight-bold">{{ commentCounter }}</span> 已評論餐廳 
+      <div class="d-flex align-items-center">
+        <span class="badge badge-secondary font-weight-bold mr-1">{{ commentCounter }}</span> 已評論餐廳
       </div>
     </div>
   </div>
 </div>
 
 <div class="card mt-3" style="height: 10rem">
-  <div class="card-header font-weight-bold">
-    <span class="badge badge-secondary font-weight-bold">{{ commentCounter }}</span> 已評論餐廳
+  <div class="card-header font-weight-bold d-flex align-items-center">
+    <span class="badge badge-secondary font-weight-bold mr-1">{{ commentCounter }}</span> 已評論餐廳
   </div>
   <div class="card-body d-flex">
     {{#each comments}}
