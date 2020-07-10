@@ -56,15 +56,38 @@ const restController = {
   getRestaurant: (req, res) => {
     const { id } = req.params
     return Restaurant.findByPk(id, {
-      include: [
-        Category,
-        { model: Comment, include: [User] }
-      ]
+      include: [Category]
+    }).then(restaurant => {
+      console.log(123, restaurant)
+      return res.render('restaurant', { restaurant: restaurant.toJSON() })
     })
-      .then(restaurant => {
-        return res.render('restaurant', { restaurant: restaurant.toJSON() })
+      .catch(err => console.log(err))
+  },
+
+  getFeeds: (req, res) => {
+    return Restaurant.findAll({
+      raw: true,
+      nest: true,
+      limit: 10,
+      order: [['createdAt', 'desc']],
+      include: [Category]
+    }).then(restaurants => {
+      Comment.findAll({
+        raw: true,
+        nest: true,
+        limit: 10,
+        order: [['createdAt', 'desc']],
+        include: [User, Restaurant]
+      }).then(comments => {
+        console.log(comments)
+        return res.render('feeds', {
+          restaurants,
+          comments
+        })
       })
+    })
   }
+
 
 
 

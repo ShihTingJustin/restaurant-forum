@@ -27,9 +27,11 @@ module.exports = (app, passport) => {
     res.redirect('/login')
   }
   //前台頁面
+  app.get('/restaurants/feeds', authenticated, restController.getFeeds)
   app.get('/', authenticated, (req, res) => res.redirect('restaurants'))
   app.get('/restaurants', authenticated, restController.getRestaurants)
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+  
   app.post('/comments', authenticated, commentController.postComment)
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
   app.get('/users/:id', authenticated, userController.getUser)
