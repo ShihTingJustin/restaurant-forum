@@ -79,8 +79,8 @@ let userController = {
   getUser: (req, res) => {
     const isIdOwner = Number(req.params.id) === req.user.id ? true : false
     return User.findByPk(req.params.id)
-      .then(user => {
-        return res.render('profile', { user: user.toJSON(), isIdOwner })
+      .then(otherUser => {
+        return res.render('profile', { user: req.user, otherUser: otherUser.toJSON() , isIdOwner })
       })
       .catch(err => console.log(err))
   },

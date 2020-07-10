@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-9 col-md-6 col-lg-4 m-auto">
     <div class="card card-body text-center" style="height: 30rem">
-      <img src="{{ user.image }}" alt="" class="border rounded-circle mx-auto" style="width: 150px; height: 150px;">
-      <h1 class="mt-3">{{ user.name }}</h1>
-      <div>{{ user.email }}</div>
+      <img src="{{ otherUser.image }}" alt="" class="border rounded-circle mx-auto" style="width: 150px; height: 150px;">
+      <h1 class="mt-3">{{ otherUser.name }}</h1>
+      <div>{{ otherUser.email }}</div>
       {{#if isIdOwner}}
       <a href="/users/{{ user.id }}/edit" class="btn btn-primary mt-5">Edit</a>
       {{/if}}
