@@ -77,36 +77,55 @@ let userController = {
   },
 
   getUser: (req, res) => {
+    const isIdOwner = Number(req.params.id) === req.user.id ? true : false
     return User.findByPk(req.params.id)
       .then(user => {
-        return res.render('profile', { user: user.toJSON() })
+        return res.render('profile', { user: user.toJSON(), isIdOwner })
       })
       .catch(err => console.log(err))
   },
 
   editUser: (req, res) => {
-    return User.findByPk(req.params.id)
-      .then(user => res.render('editProfile', { user: user.toJSON() }))
-      .catch(err => console.log(err))
+    if (Number(req.params.id) === req.user.id) {
+      return User.findByPk(req.params.id)
+        .then(user => res.render('editProfile', { user: user.toJSON() }))
+        .catch(err => console.log(err))
+    } else {
+      req.flash('error_msg', 'You can only edit your own profile.')
+      return res.redirect(`/users/${req.user.id}`)
+    }
   },
 
   putUser: (req, res) => {
-    console.log(req.body.name)
-    if (!req.body.name) {
-      req.flash('warning_msg', 'Please enter user name.')
-      return res.redirect('back')
-    }
-
-    const { file } = req
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, (err, img) => {
-        if (err) console.log(`[ERROR]: ${err}`)
+    if (Number(req.params.id) === req.user.id) {
+      if (!req.body.name) {
+        req.flash('warning_msg', 'Please enter user name.')
+        return res.redirect('back')
+      }
+      const { file } = req
+      if (file) {
+        imgur.setClientID(IMGUR_CLIENT_ID)
+        imgur.upload(file.path, (err, img) => {
+          if (err) console.log(`[ERROR]: ${err}`)
+          return User.findByPk(req.params.id)
+            .then(user => {
+              user.update({
+                name: req.body.name,
+                image: img.data.link
+              })
+            })
+            .then(() => {
+              req.flash('success_msg', 'Your profile was successfully updated')
+              return res.redirect(`/users/${req.user.id}`)
+            })
+            .catch(err => console.log(err))
+        })
+      } else {
         return User.findByPk(req.params.id)
           .then(user => {
             user.update({
               name: req.body.name,
-              image: img.data.link
+              image: user.image
             })
           })
           .then(() => {
@@ -114,20 +133,10 @@ let userController = {
             return res.redirect(`/users/${req.user.id}`)
           })
           .catch(err => console.log(err))
-      })
+      }
     } else {
-      return User.findByPk(req.params.id)
-        .then(user => {
-          user.update({
-            name: req.body.name,
-            image: user.image
-          })
-        })
-        .then(() => {
-          req.flash('success_msg', 'Your profile was successfully updated')
-          return res.redirect(`/users/${req.user.id}`)
-        })
-        .catch(err => console.log(err))
+      req.flash('error_msg', 'You can only edit your own profile.')
+      return res.redirect(`/users/${req.user.id}`)
     }
   }
 }

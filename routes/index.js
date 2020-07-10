@@ -34,7 +34,7 @@ module.exports = (app, passport) => {
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
   app.get('/users/:id', authenticated, userController.getUser)
   app.get('/users/:id/edit', authenticated, userController.editUser)
-  app.put('/users/:id', authenticated, userController.putUser)
+  app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 
   // 後台頁面
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
