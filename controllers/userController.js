@@ -93,7 +93,6 @@ let userController = {
           limit: 10
         })
           .then(comments => {
-            console.log(comments, comments.rows[0].User.id)
             return res.render('profile', {
               user: req.user,
               otherUser,
