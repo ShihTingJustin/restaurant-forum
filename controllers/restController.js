@@ -93,22 +93,16 @@ const restController = {
 
   getDashboard: (req, res) => {
     return Restaurant.findByPk(req.params.id, {
-      include: Category
+      include: [
+        Category,
+        { model: Comment, include: [User] }
+      ]
     }).then(restaurant => {
-      Comment.findAndCountAll({
-        raw: true,
-        nest: true,
-        where: { RestaurantId: req.params.id },
-        include: [Restaurant],
-        limit: 0
-      }).then(comments => {
-        return res.render('dashboard', {
-          commentCounter: comments.count,
-          restaurant: restaurant.toJSON()
-        })
-      }).catch(err => console.log(err))
-    }).catch(err => console.log(err))
-  }
+      console.log(restaurant.toJSON())
+      return res.render('dashboard', {
+        restaurant: restaurant.toJSON()
+      })
+    })  }
 
 }
 
