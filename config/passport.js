@@ -4,6 +4,7 @@ const FacebookStrategy = require('passport-facebook').Strategy
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+const Restaurant = db.Restaurant
 
 // 不知道為什麼這裡還要再寫一次才能使用.env
 if (process.env.NODE_ENV !== 'production') {
@@ -31,7 +32,7 @@ passport.use(new FacebookStrategy(
     clientID: process.env.FACEBOOK_ID,
     clientSecret: process.env.FACEBOOK_SECRET,
     callbackURL: process.env.FACEBOOK_CALLBACK,
-    profileFields: ['email', 'displayName'] 
+    profileFields: ['email', 'displayName']
   }, (accessToken, refreshToken, profile, done) => {
     const { email, name, profile_pic } = profile._json
     User.findOne({ where: { email } })
@@ -43,11 +44,11 @@ passport.use(new FacebookStrategy(
           email,
           password: bcrypt.hashSync(randomPassword, bcrypt.genSaltSync(10), null)
         })
-        .then(user => done(null, user))
-        .catch(err => done(err, false))
+          .then(user => done(null, user))
+          .catch(err => done(err, false))
       })
   }
-  ))
+))
 
 
 passport.serializeUser((user, done) => {
@@ -55,11 +56,14 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((id, done) => {
-  User.findByPk(id)
-    .then(user => {
-      user = user.toJSON()
-      return done(null, user)
-    })
+  User.findByPk(id, {
+    include: [
+      { model: Restaurant, as: 'FavoritedRestaurants' }
+    ]
+  }).then(user => {
+    user = user.toJSON()
+    return done(null, user)
+  })
 })
 
 module.exports = passport
