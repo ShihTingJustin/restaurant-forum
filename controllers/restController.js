@@ -102,7 +102,8 @@ const restController = {
       return res.render('dashboard', {
         restaurant: restaurant.toJSON()
       })
-    })  }
+    })
+  }
 
 }
 
