@@ -13,7 +13,8 @@
   </li>
   {{#each categories}}
   <li class="nav-item">
-    <a class="nav-link {{#ifCond this.id  ../categoryId}}active{{/ifCond}}" href="?categoryId={{this.id}}">{{this.name}}</a>
+    <a class="nav-link {{#ifCond this.id  ../categoryId}}active{{/ifCond}}"
+      href="?categoryId={{this.id}}">{{this.name}}</a>
   </li>
   {{/each}}
 </ul>
@@ -31,6 +32,10 @@
         </p>
         <span class="badge badge-secondary">{{this.categoryName}}</span>
         <p class="card-text">{{this.description}}</p>
+        <form action="/favorite/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
+            class="btn btn-danger">移除最愛</button></form>
+        <form action="/favorite/{{this.id}}" method="POST"><button type="submit" class="btn btn-primary">加到最愛</button>
+        </form>
       </div>
     </div>
   </div>
