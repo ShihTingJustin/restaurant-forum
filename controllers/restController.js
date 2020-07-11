@@ -62,10 +62,12 @@ const restController = {
         { model: Comment, include: [User] }
       ]
     }).then(restaurant => {
-      //console.log(restaurant.toJSON())
+      return restaurant.update({
+        viewCounts: restaurant.toJSON().viewCounts + 1
+      })
+    }).then(restaurant => {
       return res.render('restaurant', { restaurant: restaurant.toJSON() })
-    })
-      .catch(err => console.log(err))
+    }).catch(err => console.log(err))
   },
 
   getFeeds: (req, res) => {
@@ -98,7 +100,6 @@ const restController = {
         { model: Comment, include: [User] }
       ]
     }).then(restaurant => {
-      console.log(restaurant.toJSON())
       return res.render('dashboard', {
         restaurant: restaurant.toJSON()
       })
