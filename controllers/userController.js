@@ -79,28 +79,33 @@ let userController = {
   getUser: (req, res) => {
     const isIdOwner = Number(req.params.id) === req.user.id ? true : false
     return User.findByPk(req.params.id, {
-      raw: true,
-      nest: true,
-    })
-      .then(otherUser => {
-        Comment.findAndCountAll({
-          where: { UserId: req.params.id },
-          raw: true,
-          nest: true,
-          include: [User, Restaurant],
-          limit: 10
-        })
-          .then(comments => {
-            return res.render('profile', {
-              user: req.user,
-              otherUser,
-              isIdOwner,
-              commentCounter: comments.count,
-              comments: comments.rows
-            })
-          })
+      include: [
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' },
+        { model: Comment, include: [Restaurant] },
+        { model: Restaurant, as: 'FavoritedRestaurants' }
+      ]
+    }).then(user => {
+      // 已評論餐廳：一個餐廳只能計入一則評論
+      // 取出所有 comments
+      const comments = user.toJSON().Comments
+      // 比對 comment 的 RestaurantId
+      const filteredComments = comments.reduce((res, itm) => {
+        let result = res.find(item => item.RestaurantId === itm.RestaurantId)
+        if(!result) return res.concat(itm)
+        return res
+      }, [])
+
+      return res.render('profile', {
+        userYouClick: user.toJSON(),
+        user: req.user,
+        followers: user.toJSON().Followers,
+        followings: user.toJSON().Followings,
+        comments: filteredComments,
+        favoritedRestaurants: user.toJSON().FavoritedRestaurants,
+        isIdOwner
       })
-      .catch(err => console.log(err))
+    })
   },
 
   editUser: (req, res) => {

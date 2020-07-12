@@ -1,35 +1,88 @@
 <div class="card card-body">
   <div class="row d-flex align-items-center">
     <div class="profile-avatar col-2 mx-4">
-      <img src="{{#unless otherUser.image}}https://www.kindpng.com/picc/b/130/1300240.png{{/unless}}{{ otherUser.image }}" alt="" class="border rounded-circle mx-auto"
-        style="width: 150px; height: 150px;">
+      <img src="{{ userYouClick.image }}" alt="" class="border rounded-circle mx-auto" style="width: 150px; height: 150px;">
     </div>
     <div class="profile-info col-4 ml-4">
-      <h1>{{ otherUser.name }}</h1>
-      <div>{{ otherUser.email }}</div>
+      <h1>{{ userYouClick.name }}</h1>
+      <div>{{ userYouClick.email }}</div>
       {{#if isIdOwner}}
       <a href="/users/{{ user.id }}/edit" class="btn btn-primary mt-5 px-5">Edit</a>
       {{/if}}
     </div>
     <div class="profile-activity col-4">
       <div class="d-flex align-items-center">
-        <span class="badge badge-secondary font-weight-bold mr-1">{{ commentCounter }}</span> 已評論餐廳
+        <span class="badge badge-secondary font-weight-bold mr-1">{{ followers.length }}</span> 位追蹤者
       </div>
+      <div class="d-flex align-items-center">
+        <span class="badge badge-secondary font-weight-bold mr-1">{{ followings.length }}</span> 追蹤中</div>
+      <div class="d-flex align-items-center">
+        <span class="badge badge-secondary font-weight-bold mr-1">{{ comments.length }}</span> 已評論餐廳</div>
+      <div class="d-flex align-items-center">
+        <span class="badge badge-secondary font-weight-bold mr-1">{{ favoritedRestaurants.length }}</span> 已收藏餐廳</div>
     </div>
   </div>
 </div>
-
-<div class="card mt-3" style="height: 10rem">
-  <div class="card-header font-weight-bold d-flex align-items-center">
-    <span class="badge badge-secondary font-weight-bold mr-1">{{ commentCounter }}</span> 已評論餐廳
-  </div>
-  <div class="card-body d-flex">
-    {{#each comments}}
-    <div class="restaurant-image mx-auto">
-      <a href="/restaurants/{{ this.Restaurant.id }}">
-        <img src="{{ this.Restaurant.image }}" alt="" class="rounded mx-auto" style="width: 75px; height: 75px;">
-      </a>
+<div class="profile-down row">
+  <div class="user-activity col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
+    <div class="card mt-3" style="max-height: 25rem;">
+      <div class="card-header font-weight-bold d-flex align-items-center">
+        <span class="badge badge-secondary font-weight-bold mr-1">{{ followers.length }}</span> 位追蹤者
+      </div>
+      <div class="card-body d-flex flex-wrap justify-content-start">
+        {{#each followers}}
+          <a class="image mx-2 mt-2" href="/users/{{ this.id }}">
+            <img src="{{#unless this.image}}https://www.kindpng.com/picc/b/130/1300240.png{{/unless}}{{ this.image }}"
+              alt="" class="rounded-circle mx-auto" style="width: 75px; height: 75px;">
+          </a>
+        {{/each}}
+      </div>
     </div>
-    {{/each}}
+
+    <div class="card mt-3">
+      <div class="card-header font-weight-bold d-flex align-items-center">
+        <span class="badge badge-secondary font-weight-bold mr-1">{{ followings.length }}</span> 追蹤中
+      </div>
+      <div class="card-body d-flex flex-wrap justify-content-start">
+        {{#each followings}}
+          <a class="image mx-2 mt-2" href="/users/{{ this.id }}">
+            <img src="{{#unless this.image}}https://www.kindpng.com/picc/b/130/1300240.png{{/unless}}{{ this.image }}"
+              alt="" class="rounded-circle mx-auto" style="width: 75px; height: 75px;">
+          </a>
+        {{/each}}
+      </div>
+    </div>
   </div>
+
+  <div class="restaurant-activity col-12 col-sm-12 col-md-12 col-lg-12 col-xl-8">
+    <div class="card mt-3" style="max-height: 25rem;">
+      <div class="card-header font-weight-bold d-flex align-items-center">
+        <span class="badge badge-secondary font-weight-bold mr-1">{{ comments.length }}</span> 已評論餐廳
+      </div>
+      <div class="card-body d-flex flex-wrap justify-content-start">
+        {{#each comments}}
+          <a class="image mx-2 mt-2" href="/restaurants/{{ this.Restaurant.id }}">
+            <img src="{{ this.Restaurant.image }}" alt="" class="rounded mx-auto" style="width: 75px; height: 75px;">
+          </a>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-header font-weight-bold d-flex align-items-center">
+        <span class="badge badge-secondary font-weight-bold mr-1">{{ favoritedRestaurants.length }}</span> 已收藏餐廳
+      </div>
+      <div class="card-body d-flex flex-wrap justify-content-start">
+        {{#each favoritedRestaurants}}
+        <div class="image mx-2 mt-2">
+          <a href="/restaurants/{{ this.id }}">
+            <img src="{{ this.image }}" alt="" class="rounded mx-auto" style="width: 75px; height: 75px;">
+          </a>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+  </div>
+
 </div>

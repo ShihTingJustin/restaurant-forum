@@ -103,3 +103,9 @@ input + .label {
   color: #ffffff;
 }
 /* login page */
+
+
+/* profile page */
+.profile-down .card .card-body .image img:hover {
+  filter: brightness(50%);
+}
