@@ -1,10 +1,8 @@
 const db = require('../models')
-const commentController = require('./commentController')
 const Restaurant = db.Restaurant
 const Category = db.Category
 const Comment = db.Comment
 const User = db.User
-const Favorite = db.Favorite
 
 const pageLimit = 10
 
@@ -130,10 +128,11 @@ const restController = {
         FavoritedUsersCount: restaurant.FavoritedUsers.length,
         isFavorited: restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
       }))
+      // restaurant won't get in top 10 list if favoritedUser is 0
+      restaurants = restaurants.filter(restaurant => restaurant.FavoritedUsersCount !== 0)
       restaurants = restaurants.sort((a, b) => b.FavoritedUsersCount - a.FavoritedUsersCount)
       return res.render('topRestaurant', { restaurants })
-    })
-    .catch(err => console.log(err))
+    }).catch(err => console.log(err))
   }
 
 }
