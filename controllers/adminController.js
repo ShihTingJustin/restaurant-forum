@@ -71,16 +71,9 @@ const adminController = {
   },
 
   getRestaurant: (req, res) => {
-    const { id } = req.params
-    return Restaurant.findByPk(id, {
-      raw: true,
-      nest: true,
-      include: [Category]
+    adminService.getRestaurant(req, res, data => {
+      return res.render('admin/restaurant', data)
     })
-      .then(restaurant => {
-        return res.render('admin/restaurant', { restaurant })
-      })
-      .catch(err => console.log(err))
   },
 
   editRestaurant: (req, res) => {
