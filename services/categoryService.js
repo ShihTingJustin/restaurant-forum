@@ -30,11 +30,26 @@ const categoryService = {
     } else {
       return Category.create({ name })
         .then(() => {
-          callback({ status: 'success', message: 'Category was successfully created'})
+          callback({ status: 'success', message: 'Category was successfully created' })
         })
         .catch(err => console.log(err))
     }
   },
+
+  putCategory: (req, res, callback) => {
+    const { name } = req.body
+    const { id } = req.params
+    if (!name) {
+      callback({ status: 'error', message: 'Please enter a category name.' })
+    } else {
+      return Category.findByPk(id)
+        .then(category => {
+          return category.update({ name })
+        })
+        .then(() => callback({ status: 'success', message: 'Category was successfully updated' }))
+        .catch(err => console.log(err))
+    }
+  }
 
 }
 
