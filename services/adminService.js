@@ -22,7 +22,16 @@ const adminService = {
     }).then(restaurant => {
       callback({ restaurant })
     }).catch(err => console.log(err))
+  },
+
+  deleteRestaurant: (req, res, callback) => {
+    const { id } = req.params
+    return Restaurant.destroy({ where: { id } })
+      .then(() => callback({ status: 'success', message: '' }))
+      .catch(err => console.log(err))
   }
+
 }
+
 
 module.exports = adminService
