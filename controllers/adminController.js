@@ -26,48 +26,14 @@ const adminController = {
   },
 
   postRestaurant: (req, res) => {
-    const { name, tel, address, opening_hours, description } = req.body
-    if (!name) {
-      req.flash('error_msg', "name didn't exist")
-      return res.redirect('back')
-    }
-    const { file } = req
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, (err, img) => {
-        if (err) console.log(`[ERROR]: ${err}`)
-        return Restaurant.create({
-          name,
-          tel,
-          address,
-          opening_hours,
-          description,
-          image: img.data.link,
-          CategoryId: req.body.categoryId
-        })
-          .then(() => {
-            req.flash('success_mgs', 'restaurant was successfully created')
-            res.redirect('/admin/restaurants')
-          })
-          .catch(err => console.log(err))
-      })
-    } else {
-      return Restaurant.create({
-        name,
-        tel,
-        address,
-        opening_hours,
-        description,
-        image: null,
-        CategoryId: req.body.categoryId
-      })
-        .then(() => {
-          req.flash('success_mgs', 'restaurant was successfully created')
-          res.redirect('/admin/restaurants')
-        })
-        .catch(err => console.log(err))
-    }
-
+    adminService.postRestaurant(req, res, data => {
+      if (data.status === 'error') {
+        req.flash('error_msg', data.message)
+        return res.redirect('back')
+      } 
+      req.flash('success_msg', data.message)
+      return res.redirect('/admin/restaurants')
+    })
   },
 
   getRestaurant: (req, res) => {

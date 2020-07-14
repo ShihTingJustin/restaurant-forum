@@ -95,7 +95,7 @@ let userController = {
         if(!result) return res.concat(itm)
         return res
       }, [])
-
+      
       return res.render('profile', {
         userYouClick: user.toJSON(),
         user: req.user,
