@@ -19,9 +19,7 @@ const adminService = {
   postRestaurant: (req, res, callback) => {
     const { name, tel, address, opening_hours, description } = req.body
     if (!name) {
-      callback({
-        status: 'error', message: `name didn't exist`
-      })
+      callback({ status: 'error', message: `name didn't exist` })
     }
     const { file } = req
     if (file) {
@@ -69,6 +67,53 @@ const adminService = {
     }).then(restaurant => {
       callback({ restaurant })
     }).catch(err => console.log(err))
+  },
+
+  putRestaurant: (req, res, callback) => {
+    const { id } = req.params
+    const { name, tel, address, opening_hours, description } = req.body
+    if (!name) {
+      callback({ status: 'error', message: "name didn't exist" })
+    }
+
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        if (err) console.log(`[ERROR]: ${err}`)
+        return Restaurant.findByPk(id)
+          .then(restaurant => {
+            restaurant.update({
+              name,
+              tel,
+              address,
+              opening_hours,
+              description,
+              image: img.data.link,
+              CategoryId: req.body.categoryId
+            })
+              .then(() => {
+                callback({ status: 'success', message: 'restaurant was successfully updated' })
+              })
+          }).catch(err => console.log(err))
+      })
+    } else {
+      return Restaurant.findByPk(id)
+        .then(restaurant => {
+          restaurant.update({
+            name,
+            tel,
+            address,
+            opening_hours,
+            description,
+            image: restaurant.image,
+            CategoryId: req.body.categoryId
+          })
+            .then(() => {
+              callback({ status: 'success', message: 'restaurant was successfully updated' })
+            })
+        }).catch(err => console.log(err))
+    }
   },
 
   deleteRestaurant: (req, res, callback) => {
