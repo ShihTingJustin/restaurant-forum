@@ -9,6 +9,28 @@ const ExtractJwt = passportJWT.ExtractJwt
 const JwtStrategy = passportJWT.Strategy
 
 let userController = {
+
+  signUp: (req, res) => {
+    if (req.body.passwordCheck !== req.body.passport) {
+      return res.json({ status: 'error', message: '兩次密碼輸入不同' })
+    } else {
+      User.findOne({ where: { email: req.body.email } })
+        .then(user => {
+          if (user) {
+            return res.json({ status: 'error', message: '信箱重複！' })
+          } else {
+            User.create({
+              name: req.body.name,
+              email: req.body.email,
+              password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
+            }).then(user => {
+              return res.json({ status: 'success', message: '成功註冊帳號！' })
+            })
+          }
+        })
+    }
+  },
+
   signIn: (req, res) => {
     // 檢查必要資料
     if (!req.body.email || !req.body.password) {
@@ -32,9 +54,9 @@ let userController = {
           message: 'ok',
           token: token,
           user: {
-            id: user.id, 
-            name: user.name, 
-            email: user.email, 
+            id: user.id,
+            name: user.name,
+            email: user.email,
             isAdmin: user.isAdmin
           }
         })
