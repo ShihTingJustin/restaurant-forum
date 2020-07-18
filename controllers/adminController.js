@@ -77,58 +77,23 @@ const adminController = {
   },
 
   getUsers: (req, res) => {
-    return User.findAll({ raw: true })
-      .then(users => {
-        res.render('admin/users', { users })
-      })
+    adminService.getUsers(req, res, data => {
+      return res.render('admin/users', data)
+    })
   },
 
   putUser: (req, res) => {
-    const { id } = req.params
-    const switches = req.body.switch
+    adminService.putUser(req, res, data => {
+      if (data.status === 'error') {
+        req.flash('warning_msg', data.message)
+        return res.redirect('/admin/users')
+      }
 
-    if (!switches) {
-      return User.findAll({ where: { isAdmin: 1 } })
-        .then(users => {
-          if (users.length > 1) {
-            return User.findByPk(id)
-              .then(user => {
-                user.update({
-                  isAdmin: 0
-                })
-                  .then(user => {
-                    req.flash('success_msg', `The authority of user "${user.email}" was successfully updated`)
-                    return res.redirect('/admin/users')
-                  })
-                  .catch(err => console.log(err))
-              })
-              .catch(err => console.log(err))
-          } else {
-            return User.findByPk(id)
-              .then(user => {
-                req.flash('warning_msg', `Unable to adjust authority of user "${user.email}", at least one admin must be there.`)
-                return res.redirect('/admin/users')
-              })
-              .catch(err => console.log(err))
-          }
-        })
-        .catch(err => console.log(err))
-    }
-
-    if (switches) {
-      return User.findByPk(id)
-        .then(user => {
-          user.update({
-            isAdmin: 1
-          })
-            .then(user => {
-              req.flash('success_msg', `The authority of user "${user.email}" was successfully updated`)
-              return res.redirect('/admin/users')
-            })
-            .catch(err => console.log(err))
-        })
-        .catch(err => console.log(err))
-    }
+      if (data.status === 'success') {
+        req.flash('success_msg', data.message)
+        return res.redirect('/admin/users')
+      }
+    })
   }
 
 }
